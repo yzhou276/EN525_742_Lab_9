@@ -25,12 +25,12 @@ int main()
 // first, get a pointer to the peripheral base address using /dev/mem and the function mmap
     volatile unsigned int *dipsandleds_ptr = get_a_pointer(DIPS_AND_LEDS_BASEADDR);	
     printf("\r\n\r\n\r\nLab 6 Example Program\n\r");
-    unsigned int ctr = 0;
     while (1)
     {
-	    *(dipsandleds_ptr+GPIO_LED_OFFSET) = ctr;
-	    ctr++;
-	    sleep(0.5);
+	    *(dipsandleds_ptr+GPIO_LED_OFFSET) = 0xf;
+	    usleep(500000);
+	    *(dipsandleds_ptr+GPIO_LED_OFFSET) = 0x0;	
+		usleep(500000);
 	    // for demonstration purposes, print the value of the DIPS
 	    printf("Current Switches = %d\r\n",*(dipsandleds_ptr+GPIO_DIP_OFFSET));
     }
