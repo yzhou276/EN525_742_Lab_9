@@ -4,11 +4,9 @@
 #include <unistd.h>
 #define _BSD_SOURCE
 
-#define RADIO_TUNER_FAKE_ADC_PINC_OFFSET 0
-#define RADIO_TUNER_TUNER_PINC_OFFSET 1
-#define RADIO_TUNER_CONTROL_REG_OFFSET 2
-#define RADIO_TUNER_TIMER_REG_OFFSET 3
-#define RADIO_PERIPH_ADDRESS 0x43c00000
+#define GPIO_DIP_OFFSET 2
+#define GPIO_LED_OFFSET 0 
+#define DIPS_AND_LEDS_BASEADDR 0x41200000
 
 // the below code uses a device called /dev/mem to get a pointer to a physical
 // address.  We will use this pointer to read/write the custom peripheral
@@ -25,12 +23,16 @@ int main()
 {
 
 // first, get a pointer to the peripheral base address using /dev/mem and the function mmap
-    volatile unsigned int *my_periph = get_a_pointer(RADIO_PERIPH_ADDRESS);	
-    printf("\r\n\r\n\r\nLab 6 Silly Register Read and Write Program\n\r");
-    printf("Writing 4 registers in the periph with a counting pattern\n");
-    my_periph[0] = 0; my_periph[1] = 1; my_periph[2] = 2; my_periph[3] = 3;
-    for (int i = 0; i<8; i++)
-    	printf("reading address %x = %x\n",RADIO_PERIPH_ADDRESS+4*i, my_periph[i]);
-    printf("was that what you expected?\n");
+    volatile unsigned int *dipsandleds_ptr = get_a_pointer(DIPS_AND_LEDS_BASEADDR);	
+    printf("\r\n\r\n\r\nLab 6 Example Program\n\r");
+    unsigned int ctr = 0;
+    while (1)
+    {
+	    *(dipsandleds_ptr+GPIO_LED_OFFSET) = ctr;
+	    ctr++;
+	    sleep(0.5);
+	    // for demonstration purposes, print the value of the DIPS
+	    printf("Current Switches = %d\r\n",*(dipsandleds_ptr+GPIO_DIP_OFFSET));
+    }
     return 0;
 }
