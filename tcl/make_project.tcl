@@ -1,4 +1,4 @@
-set project_name "linux_lab"
+set project_name "linux_lab_9"
 create_project ${project_name} ./vivado -part xc7z020clg400-1 -force
 
 set proj_dir [get_property directory [current_project]]

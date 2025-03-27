@@ -1,4 +1,4 @@
-set project_name "linux_lab"
+set project_name "linux_lab_9"
 open_project ./vivado/${project_name}.xpr
 
 
